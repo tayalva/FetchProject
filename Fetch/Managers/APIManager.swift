@@ -34,7 +34,7 @@ extension MealAPI {
     }
 }
 
-class APIManager {    
+actor APIManager {
     private func performRequest<T: Decodable>(url: URL) async throws -> T {
         let (data, _) = try await URLSession.shared.data(from: url)
         let decodedResponse = try JSONDecoder().decode(T.self, from: data)
@@ -108,18 +108,5 @@ extension APIManager {
         } else {
             throw ServiceError.noData
         }
-    }
-}
-
-struct MealsError: Error {
-    let type: LocalizedError
-    
-    var title = "Uh Oh!"
-    var userMessage: String {
-        return "\(type.failureReason ?? "Something went wrong.") \n \(type.recoverySuggestion ?? "Try again later.")"
-    }
-    
-    init(type: LocalizedError) {
-        self.type = type
     }
 }
